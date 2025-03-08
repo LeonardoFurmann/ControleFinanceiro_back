@@ -5,6 +5,12 @@ const getUsers = async () => {
     return await prisma.user.findMany();
 }
 
+const findUserById = async(id) => {
+    return await prisma.user.findUnique({
+      where: {id: parseInt(id)},
+    });
+}
+
 const postUser = async (user) => {
      await prisma.user.create({
         data:{
@@ -15,5 +21,43 @@ const postUser = async (user) => {
     })
 }
 
+const updateUser = async(id, user) => {
+    return await prisma.user.update({
+        where: {id: parseInt(id)},
+        data : user,
+    })
+}
 
-module.exports = { getUsers, postUser };
+const deleteUser = async(id) => {
+    return await prisma.user.delete({
+        where: {id: parseInt(id)},
+    })
+}
+
+const findUserByEmail = async(email) => {
+    return await prisma.user.findUnique({
+      where: {email},
+    });
+}
+
+const findUserByEmailNotId = async(id, email) => {
+    return await prisma.user.findFirst({
+      where: {
+        email,
+        id: {not : parseInt(id)}   
+    },
+    });
+}
+
+const userModel = {
+    getUsers,
+    postUser,
+    findUserByEmail,
+    updateUser,
+    findUserByEmailNotId,
+    findUserById,
+    deleteUser
+};
+
+
+module.exports = userModel;
