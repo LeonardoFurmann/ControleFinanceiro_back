@@ -1,11 +1,12 @@
 const userModel = require("../models/userModel");
+const CustomError = require("../helpers/CustomError");
 
 const getUsers = async() => {
-    return await await userModel.findUserById(id);
+    return await userModel.getUsers();
 }
 
 const getUserById = async(id) => {
-    return await verifyExistingUser(id);
+    return await userModel.findUserById(id);
 }
 
 const getUserByEmail = async (email) => {
@@ -30,17 +31,17 @@ const deleteUser = async(id) => {
 
 async function verifyExistingUser(id){
     const existingUser = await userModel.findUserById(id);
-    if (!existingUser) throw new Error("Usuário não encontrado")
+    if (!existingUser) throw new CustomError("Usuário não encontrado", 404)
 }
 
 async function verifyUserByEmail(email){
     const existingUser = await userModel.findUserByEmail(email);
-    if (existingUser) throw new Error("Email já cadastrado.")
+    if (existingUser) throw new CustomError("Email já cadastrado.", 404)
 }
 
 async function verifyUserByEmailNotId(id, email){
     const existingUser = await userModel.findUserByEmailNotId(id, email);
-    if (existingUser) throw new Error("Este e-mail já está em uso por outro usuário")
+    if (existingUser) throw new CustomError("Este e-mail já está em uso por outro usuário", 404)
 }
 
 const userService = {
@@ -49,7 +50,8 @@ const userService = {
     getUserByEmail,
     postUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    verifyExistingUser
 };
 
 module.exports = userService;

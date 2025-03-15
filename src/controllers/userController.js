@@ -6,7 +6,7 @@ const getUsers = async (req, res) => {
         const users = await userService.getUsers();
         res.json(users)
     } catch (error){
-        res.status(500).json({error: "Erro ao buscar usuários: " + error.message});
+        res.status(error.statusCode || 500).json({error: "Erro ao buscar usuários: " + error.message});
     }
 }
 
@@ -19,7 +19,7 @@ const getUserById = async (req, res) => {
         }
         res.json(user);
     } catch (error){
-        res.status(500).json({error: "Erro ao buscar usuário: " + error.message});
+        res.status(error.statusCode || 500).json({error: "Erro ao buscar usuário: " + error.message});
     }
 }
 
@@ -32,7 +32,7 @@ const getUserByEmail = async (req, res) => {
         }
         res.json(user);
     } catch (error) {
-        res.status(500).json({ error: "Erro ao buscar usuário: " + error.message });
+        res.status(error.statusCode || 500).json({ error: "Erro ao buscar usuário: " + error.message });
     }
 };
 
@@ -43,7 +43,7 @@ const postUser = async (req, res) => {
         await userService.postUser(user);
         res.status(201).json("Usuário cadastro com sucesso.")
     } catch (error){
-        res.status(500).json({error: "Erro ao cadastrar usuário: " + error.message});
+        res.status(error.statusCode || 500).json({error: "Erro ao cadastrar usuário: " + error.message});
     }
 }
 
@@ -55,7 +55,7 @@ const updateUser = async (req ,res) =>{
         const updatedUser = await userService.updateUser(id, user);    
         res.status(200).json(updatedUser);
     } catch (error) {
-        res.status(500).json({error: "Erro ao editar o usuário: " + error.message})
+        res.status(error.statusCode || 500).json({error: "Erro ao editar o usuário: " + error.message})
     }
 }
 
@@ -65,7 +65,7 @@ const deleteUser = async (req ,res) =>{
         await userService.deleteUser(id);    
         res.status(200).json("Usuário deletado com sucesso");
     } catch (error) {
-        res.status(500).json({error: "Erro ao editar o usuário: " + error.message})
+        res.status(error.statusCode || 500).json({error: "Erro ao editar o usuário: " + error.message})
     }
 }
 
