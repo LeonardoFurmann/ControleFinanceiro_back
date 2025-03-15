@@ -37,6 +37,7 @@ model Category {
    transactions     Transaction[]
 
    @@map("categories")
+   @@unique([description, transactionTypeId]) // Garante que a descrição pode se repetir apenas se transactionTypeId for diferente
 }
 
 model TransactionType {
