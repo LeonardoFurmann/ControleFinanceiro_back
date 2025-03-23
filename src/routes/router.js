@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require("../controllers/userController");
 const categoryController = require("../controllers/categoryController");
+const paymentMethodController = require("../controllers/paymentMethodController");
 
 router.get('/', (req, res)=> res.status(200).send('o router está funcionando.') )
 
@@ -23,6 +24,17 @@ router.get("/categorias/transacao/:transactionTypeId", categoryController.getCat
 router.post("/categoria", categoryController.postCategory);
 router.put("/categoria/:id", categoryController.updateCategory);
 router.delete("/categoria/:id", categoryController.deleteCategory);
+
+
+//paymentMethod
+router.get("/paymentmethods", paymentMethodController.getPaymentMethods);
+router.get("/paymentmethods/:id", paymentMethodController.getPaymentMethodById);
+router.post("/paymentmethods", paymentMethodController.postPaymentMethod);
+router.put("/paymentmethods/:id", paymentMethodController.updatePaymentMethod);
+router.delete("/paymentmethods/:id", paymentMethodController.deletePaymentMethod);
+
+module.exports = router;
+
 
 
 module.exports = router;

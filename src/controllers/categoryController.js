@@ -1,5 +1,5 @@
 const categoryService = require("../services/categoryService");
-const categoryValidation = require("../helpers/categoryValidation");
+const categoryValidation = require("../helpers/validation");
 
 const getCategories = async (req, res) => {
     try {
