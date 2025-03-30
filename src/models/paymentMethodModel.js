@@ -5,7 +5,7 @@ const getPaymentMethods = async () => {
     return await prisma.paymentMethod.findMany();
 };
 
-const getPaymentMethodById = async (id) => {
+const findPaymentMethodById = async (id) => {
     return await prisma.paymentMethod.findUnique({
         where: { id: parseInt(id) },
     });
@@ -47,8 +47,8 @@ const findPaymentMethodByDescription = async (description) => {
 
 module.exports = {
     getPaymentMethods,
-    getPaymentMethodById,
     getPaymentMethodsByUser,
+    findPaymentMethodById,
     postPaymentMethod,
     updatePaymentMethod,
     deletePaymentMethod,

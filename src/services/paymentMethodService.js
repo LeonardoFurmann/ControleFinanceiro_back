@@ -10,13 +10,13 @@ const getPaymentMethodById = async (id) => {
 };
 
 const postPaymentMethod = async (paymentMethod) => {
-    await verifyPaymentMethodByDescription(paymentMethod.description);
+    await verifyPaymentMethod(paymentMethod.description);
     return await paymentMethodModel.postPaymentMethod(paymentMethod);
 };
 
 const updatePaymentMethod = async (id, paymentMethod) => {
     await verifyExistingPaymentMethod(id);
-    await verifyPaymentMethodByDescription(paymentMethod.description, id);
+    await verifyPaymentMethod(paymentMethod.description, id);
     return await paymentMethodModel.updatePaymentMethod(id, paymentMethod);
 };
 
@@ -27,13 +27,10 @@ const deletePaymentMethod = async (id) => {
 
 async function verifyExistingPaymentMethod(id) {
     const existingMethod = await paymentMethodModel.getPaymentMethodById(id);
-    if (!existingMethod) {
-        throw new CustomError("Método de pagamento não encontrado.", 404);
-    }
-    return existingMethod;
+    if (!existingMethod) throw new CustomError("Método de pagamento não encontrado.", 404);
 }
 
-async function verifyPaymentMethodByDescription(description, id = null) {
+async function verifyPaymentMethod(description, id = null) {
     const existingMethod = await paymentMethodModel.findPaymentMethodByDescription(description);
     if (existingMethod && (!id || existingMethod.id !== parseInt(id))) {
         throw new CustomError("Já existe um método de pagamento com essa descrição.", 400);

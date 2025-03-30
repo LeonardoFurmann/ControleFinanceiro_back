@@ -14,13 +14,13 @@ const getUserByEmail = async (email) => {
 };
 
 const postUser = async(user) => {  
-    await verifyUserByEmail(user.email);
+    await verifyUser(user.email);
     await userModel.postUser(user);
 }
 
 const updateUser = async(id, user) => {  
-    await verifyUserByEmailNotId(id);
-    await verifyUserByEmail(id, user.email)
+    await verifyExistingUser(id);
+    await verifyUser(user.email, id)
     return await userModel.updateUser(id, user);
 }
 
@@ -34,14 +34,11 @@ async function verifyExistingUser(id){
     if (!existingUser) throw new CustomError("Usuário não encontrado", 404)
 }
 
-async function verifyUserByEmail(email){
+async function verifyUser(email , id = null){
     const existingUser = await userModel.findUserByEmail(email);
-    if (existingUser) throw new CustomError("Email já cadastrado.", 404)
-}
-
-async function verifyUserByEmailNotId(id, email){
-    const existingUser = await userModel.findUserByEmailNotId(id, email);
-    if (existingUser) throw new CustomError("Este e-mail já está em uso por outro usuário", 404)
+    if (existingUser && (!id || existingUser.id !== parseInt(id))) {
+        throw new CustomError("Email já cadastrado.", 404)
+    }
 }
 
 const userService = {

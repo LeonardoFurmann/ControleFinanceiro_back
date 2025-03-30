@@ -40,21 +40,11 @@ const findUserByEmail = async(email) => {
     });
 }
 
-const findUserByEmailNotId = async(id, email) => {
-    return await prisma.user.findFirst({
-      where: {
-        email,
-        id: {not : parseInt(id)}   
-    },
-    });
-}
-
 const userModel = {
     getUsers,
     postUser,
     findUserByEmail,
     updateUser,
-    findUserByEmailNotId,
     findUserById,
     deleteUser
 };
