@@ -19,7 +19,6 @@ router.delete('/usuario/:id', userController.deleteUser);
 router.get("/categorias", categoryController.getCategories);
 router.get("/categoria/:id", categoryController.getCategoryById);
 router.get("/categorias/usuario/:userId", categoryController.getCategoriesByUser);
-router.get("/categorias/transacao/:transactionTypeId", categoryController.getCategoriesByTransactionType);
 //router.get("/categoria/descricao/:description", categoryController.getCategoryByDescription);
 router.post("/categoria", categoryController.postCategory);
 router.put("/categoria/:id", categoryController.updateCategory);

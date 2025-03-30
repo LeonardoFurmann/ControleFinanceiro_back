@@ -34,22 +34,20 @@ const deleteCategory = async (id) => {
     });
 };
 
-const findCategory = async (userId, description, transactionTypeId) => {
+const findCategoryByDescription = async (userId, description) => {
     return await prisma.category.findFirst({
         where: {
             userId: userId,
             description: description,
-            transactionTypeId: transactionTypeId,
         }
     });
 };
 
-const findCategoryNotId = async (id, userId, description, transactionTypeId) => {
+const findCategoryNotId = async (id, userId, description) => {
     return await prisma.category.findFirst({
         where: {
             userId: userId,
             description: description,
-            transactionTypeId: transactionTypeId,
             id: { not: parseInt(id) }
         },
     });
@@ -61,22 +59,15 @@ const findCategoriesByUser = async (userId) => {
     });
 };
 
-const findCategoriesByTransactionType = async (transactionTypeId) => {
-    return await prisma.category.findMany({
-        where: { transactionTypeId: parseInt(transactionTypeId) }
-    });
-};
-
 const categoryModel = {
     getCategories,
-    postCategory,
-    findCategory,
-    updateCategory,
-    findCategoryNotId,
-    findCategoryById,
-    deleteCategory,
     findCategoriesByUser,
-    findCategoriesByTransactionType
+    findCategoryByDescription,
+    findCategoryById,
+    findCategoryNotId,
+    postCategory,
+    updateCategory,
+    deleteCategory,
 };
 
 module.exports = categoryModel;

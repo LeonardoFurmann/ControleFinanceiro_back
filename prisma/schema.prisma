@@ -28,17 +28,16 @@ model Category {
    id                Int      @id @default(autoincrement())
    description       String   @db.VarChar(255)
    userId            Int
-   transactionTypeId Int
+   
    createdAt         DateTime @default(now()) @map("created_at")
    updatedAt         DateTime @updatedAt @map("updated_at")
 
    // Chaves estrangeiras
    user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-   transactionType  TransactionType  @relation(fields: [transactionTypeId], references: [id], onDelete: Cascade)
    transactions     Transaction[]
 
    @@map("categories")
-   @@unique([description, transactionTypeId]) // Garante que a descrição pode se repetir apenas se transactionTypeId for diferente
+   @@unique([description])
 }
 
 model TransactionType {
@@ -47,9 +46,8 @@ model TransactionType {
    createdAt   DateTime @default(now()) @map("created_at")
    updatedAt   DateTime @updatedAt @map("updated_at")
 
-   // Relacionamento com Categorias
-   categories  Category[]
-
+   Transaction Transaction[]
+   
    @@map("transaction_types")
 }
 
@@ -74,6 +72,7 @@ model Transaction {
    date            DateTime
    amount          Decimal  @db.Decimal(10,2)
    categoryId      Int
+   transactionTypeId Int
    userId          Int
    paymentMethodId Int
    createdAt       DateTime @default(now()) @map("created_at")
@@ -81,6 +80,7 @@ model Transaction {
 
    // Chaves estrangeiras
    category       Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+   transactionType  TransactionType  @relation(fields: [transactionTypeId], references: [id], onDelete: Cascade)
    user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
    paymentMethod  PaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
 

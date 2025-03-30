@@ -46,15 +46,6 @@ const getCategoriesByUser = async (req, res) => {
     }
 };
 
-const getCategoriesByTransactionType = async (req, res) => {
-    try {
-        const { transactionTypeId } = req.params;
-        const categories = await categoryService.getCategoriesByTransactionType(transactionTypeId);
-        res.json(categories);
-    } catch (error) {
-        res.status(error.statusCode || 500).json({ error: "Erro ao buscar categorias por tipo de transação: " + error.message });
-    }
-};
 
 const postCategory = async (req, res) => {
     try {
@@ -96,7 +87,6 @@ const categoryController = {
     updateCategory,
     deleteCategory,
     getCategoriesByUser,
-    getCategoriesByTransactionType
 };
 
 module.exports = categoryController;

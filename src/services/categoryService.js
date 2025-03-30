@@ -10,8 +10,8 @@ const getCategoryById = async (id) => {
     return await categoryModel.findCategoryById(id);
 };
 
-const getCategoryByDescription = async (userId, description, transactionTypeId) => {
-    return await categoryModel.findCategory(userId, description, transactionTypeId);
+const getCategoryByDescription = async (userId, description) => {
+    return await categoryModel.findCategoryByDescription(userId, description);
 };
 
 const getCategoriesByUser = async (userId) => {
@@ -19,20 +19,16 @@ const getCategoriesByUser = async (userId) => {
     return await categoryModel.findCategoriesByUser(userId);
 };
 
-const getCategoriesByTransactionType = async (transactionTypeId) => {
-    return await categoryModel.findCategoriesByTransactionType(transactionTypeId);
-};
-
 const postCategory = async (category) => {
     await userService.verifyExistingUser(category.userId);
-    await verifyCategory(category.userId, category.description, category.transactionTypeId);
+    await verifyCategory(category.userId, category.description);
     await categoryModel.postCategory(category);
 };
 
 const updateCategory = async (id, category) => {
     await userService.verifyExistingUser(category.userId);
     await verifyExistingCategory(id);
-    await verifyCategoryNotId(id, category.userId, category.description, category.transactionTypeId);
+    await verifyCategory(category.userId, category.description, id);
     return await categoryModel.updateCategory(id, category);
 };
 
@@ -50,17 +46,10 @@ async function verifyExistingCategory(id) {
     }
 }
 
-async function verifyCategory(userId, description, transactionType) {
-    const existingCategory = await categoryModel.findCategory(userId, description, transactionType);
-    if (existingCategory) {
+async function verifyCategory(userId, description, id = null) {
+    const existingCategory = await categoryModel.findCategoryByDescription(userId, description);
+    if (existingCategory && (!id || existingCategory.id !== parseInt(id))) {
         throw new CustomError("Categoria já cadastrada.", 400);
-    }
-}
-
-async function verifyCategoryNotId(id, userId, description, transactionType) {
-    const existingCategory = await categoryModel.findCategoryNotId(id, userId, description, transactionType);
-    if (existingCategory) {
-        throw new CustomError("Esta descrição já está em uso por outra categoria", 400);
     }
 }
 
@@ -72,7 +61,6 @@ const categoryService = {
     updateCategory,
     deleteCategory,
     getCategoriesByUser,
-    getCategoriesByTransactionType
 };
 
 module.exports = categoryService;
