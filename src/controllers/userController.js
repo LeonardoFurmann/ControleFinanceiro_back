@@ -36,17 +36,6 @@ const getUserByEmail = async (req, res) => {
     }
 };
 
-const postUser = async (req, res) => {
-    try{
-        const user = req.body;
-        userValidation.validateUser(user);
-        await userService.postUser(user);
-        res.status(201).json("Usuário cadastro com sucesso.")
-    } catch (error){
-        res.status(error.statusCode || 500).json({error: "Erro ao cadastrar usuário: " + error.message});
-    }
-}
-
 const updateUser = async (req ,res) =>{
     try {
         const { id } = req.params;
@@ -74,7 +63,6 @@ const userController = {
     getUsers,
     getUserById,
     getUserByEmail,
-    postUser,
     updateUser,
     deleteUser
 };

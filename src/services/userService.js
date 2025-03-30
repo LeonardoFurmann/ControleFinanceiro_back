@@ -1,5 +1,6 @@
 const userModel = require("../models/userModel");
 const CustomError = require("../helpers/CustomError");
+const bcrypt = require('bcrypt');
 
 const getUsers = async() => {
     return await userModel.getUsers();
@@ -15,6 +16,10 @@ const getUserByEmail = async (email) => {
 
 const postUser = async(user) => {  
     await verifyUser(user.email);
+
+    const hashPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashPassword;
+
     await userModel.postUser(user);
 }
 
