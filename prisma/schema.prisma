@@ -1,43 +1,41 @@
 generator client {
-  provider = "prisma-client-js"
+   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+   provider = "postgresql"
+   url      = env("DATABASE_URL")
 }
 
 model User {
-   id          Int      @id @default(autoincrement())
-   name        String   @db.VarChar(255)
-   email       String   @db.VarChar(255) @unique
-   password    String   @db.Text
-   createdAt   DateTime @default(now()) @map("created_at")
-   updatedAt   DateTime @updatedAt @map("updated_at")
+   id        Int      @id @default(autoincrement())
+   name      String   @db.VarChar(255)
+   email     String   @unique @db.VarChar(255)
+   password  String   @db.Text
+   createdAt DateTime @default(now()) @map("created_at")
+   updatedAt DateTime @updatedAt @map("updated_at")
 
-   // Relacionamentos
-   categories         Category[]
-   transactions       Transaction[]
+   categories    Category[]
+   transactions  Transaction[]
    //transactionMouths  TransactionMouth[]
+   PaymentMethod PaymentMethod[]
 
    @@map("users")
-   PaymentMethod PaymentMethod[]
 }
 
 model Category {
-   id                Int      @id @default(autoincrement())
-   description       String   @db.VarChar(255)
-   userId            Int
-   
-   createdAt         DateTime @default(now()) @map("created_at")
-   updatedAt         DateTime @updatedAt @map("updated_at")
+   id          Int      @id @default(autoincrement())
+   description String   @db.VarChar(255)
+   userId      Int
+   createdAt   DateTime @default(now()) @map("created_at")
+   updatedAt   DateTime @updatedAt @map("updated_at")
 
-   // Chaves estrangeiras
-   user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-   transactions     Transaction[]
+   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-   @@map("categories")
+   ransactions Transaction[]
+
    @@unique([description])
+   @@map("categories")
 }
 
 model TransactionType {
@@ -47,7 +45,7 @@ model TransactionType {
    updatedAt   DateTime @updatedAt @map("updated_at")
 
    Transaction Transaction[]
-   
+
    @@map("transaction_types")
 }
 
@@ -58,31 +56,28 @@ model PaymentMethod {
    createdAt   DateTime @default(now()) @map("created_at")
    updatedAt   DateTime @updatedAt @map("updated_at")
 
-   // Chave estrangeira
-   user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-   // Relacionamento com Transações
    transactions Transaction[]
 
    @@map("payment_methods")
 }
 
 model Transaction {
-   id              Int      @id @default(autoincrement())
-   date            DateTime
-   amount          Decimal  @db.Decimal(10,2)
-   categoryId      Int
+   id                Int      @id @default(autoincrement())
+   date              DateTime
+   amount            Decimal  @db.Decimal(10, 2)
+   categoryId        Int
    transactionTypeId Int
-   userId          Int
-   paymentMethodId Int
-   createdAt       DateTime @default(now()) @map("created_at")
-   updatedAt       DateTime @updatedAt @map("updated_at")
+   userId            Int
+   paymentMethodId   Int
+   createdAt         DateTime @default(now()) @map("created_at")
+   updatedAt         DateTime @updatedAt @map("updated_at")
 
-   // Chaves estrangeiras
-   category       Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-   transactionType  TransactionType  @relation(fields: [transactionTypeId], references: [id], onDelete: Cascade)
-   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-   paymentMethod  PaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
+   category        Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+   transactionType TransactionType @relation(fields: [transactionTypeId], references: [id], onDelete: Cascade)
+   user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+   paymentMethod   PaymentMethod   @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
 
    @@map("transactions")
 }
