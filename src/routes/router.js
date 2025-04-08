@@ -1,10 +1,10 @@
 
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const userController = require("../controllers/userController");
-const categoryController = require("../controllers/categoryController");
-const paymentMethodController = require("../controllers/paymentMethodController");
-const loginController = require("../controllers/loginController");
+import userController from "../controllers/userController.js"
+import categoryController from "../controllers/categoryController.js"
+import paymentMethodController from "../controllers/paymentMethodController.js"
+import loginController from "../controllers/loginController.js"
 
 router.get('/', (req, res)=> res.status(200).send('o router está funcionando.') )
 
@@ -39,4 +39,4 @@ router.delete("/paymentmethods/:id", paymentMethodController.deletePaymentMethod
 
 
 
-module.exports = router;
+export default router;

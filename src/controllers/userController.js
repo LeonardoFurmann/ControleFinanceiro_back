@@ -1,5 +1,5 @@
-const userService = require("../services/userService")
-const userValidation = require("../helpers/validation");
+import userService from "../services/userService.js";
+import {validateUser} from "../helpers/validation.js";
 
 const getUsers = async (req, res) => {
     try{
@@ -40,7 +40,7 @@ const updateUser = async (req ,res) =>{
     try {
         const { id } = req.params;
         const user = req.body;
-        userValidation.validateUser(user);
+        validateUser(user);
         const updatedUser = await userService.updateUser(id, user);    
         res.status(200).json(updatedUser);
     } catch (error) {
@@ -67,4 +67,4 @@ const userController = {
     deleteUser
 };
 
-module.exports = userController;
+export default userController;

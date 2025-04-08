@@ -1,6 +1,6 @@
-const userService = require("../services/userService")
-const CustomError = require("../helpers/CustomError");  // TODO module
-const bcrypt = require('bcrypt');
+import userService from "../services/userService.js";
+import CustomError from "../helpers/CustomError.js";
+import bcrypt from 'bcrypt'
 
 const login = async({email,password}) => {
     const user = await userService.getUserByEmail(email);
@@ -17,6 +17,6 @@ const login = async({email,password}) => {
 
 const loginService = {
     login
-}
+};
 
-module.exports = loginService;
+export default loginService;

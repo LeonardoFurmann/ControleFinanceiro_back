@@ -1,5 +1,5 @@
-const paymentMethodModel = require("../models/paymentMethodModel");
-const CustomError = require("../helpers/CustomError");
+import paymentMethodModel from "../models/paymentMethodModel.js"
+import CustomError from "../helpers/CustomError.js";
 
 const getPaymentMethods = async () => {
     return await paymentMethodModel.getPaymentMethods();
@@ -37,10 +37,12 @@ async function verifyPaymentMethod(description, id = null) {
     }
 }
 
-module.exports = {
+const paymentMethodService = {
     getPaymentMethods,
     getPaymentMethodById,
     postPaymentMethod,
     updatePaymentMethod,
     deletePaymentMethod,
 };
+
+export default paymentMethodService;

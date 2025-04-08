@@ -1,5 +1,5 @@
-const categoryService = require("../services/categoryService");
-const categoryValidation = require("../helpers/validation");
+import categoryService from "../services/categoryService.js";
+import { validateCategory}  from "../helpers/validation.js";
 
 const getCategories = async (req, res) => {
     try {
@@ -50,7 +50,7 @@ const getCategoriesByUser = async (req, res) => {
 const postCategory = async (req, res) => {
     try {
         const category = req.body;
-        categoryValidation.validateCategory(category);
+        validateCategory(category);
         await categoryService.postCategory(category);
         res.status(201).json("Categoria cadastrada com sucesso.");
     } catch (error) {
@@ -62,7 +62,7 @@ const updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
         const category = req.body;
-        categoryValidation.validateCategory(category);
+        validateCategory(category);
         const updatedCategory = await categoryService.updateCategory(id, category);
         res.status(200).json(updatedCategory);
     } catch (error) {
@@ -89,4 +89,5 @@ const categoryController = {
     getCategoriesByUser,
 };
 
-module.exports = categoryController;
+export default categoryController;
+

@@ -1,4 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 const getPaymentMethods = async () => {
@@ -45,7 +46,7 @@ const findPaymentMethodByDescription = async (description) => {
     });
 };
 
-module.exports = {
+const paymentMethodModel = {
     getPaymentMethods,
     getPaymentMethodsByUser,
     findPaymentMethodById,
@@ -54,3 +55,5 @@ module.exports = {
     deletePaymentMethod,
     findPaymentMethodByDescription,
 };
+
+export default paymentMethodModel;

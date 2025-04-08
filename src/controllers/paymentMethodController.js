@@ -1,5 +1,5 @@
-const paymentMethodService = require("../services/paymentMethodService");
-const paymentMethodValidation = require("../helpers/validation");
+import paymentMethodService from "../services/paymentMethodService.js";
+import { validatePaymentMethod } from "../helpers/validation.js";
 
 const getPaymentMethods = async (req, res) => {
     try {
@@ -27,7 +27,7 @@ const getPaymentMethodById = async (req, res) => {
 const postPaymentMethod = async (req, res) => {
     try {
         const paymentMethod = req.body;
-        paymentMethodValidation.validatePaymentMethod(paymentMethod);
+        validatePaymentMethod(paymentMethod);
         await paymentMethodService.postPaymentMethod(paymentMethod);
         res.status(201).json({ message: "Método de pagamento cadastrado com sucesso." });
     } catch (error) {
@@ -39,7 +39,7 @@ const updatePaymentMethod = async (req, res) => {
     try {
         const { id } = req.params;
         const paymentMethod = req.body;
-        paymentMethodValidation.validatePaymentMethod(paymentMethod);
+        validatePaymentMethod(paymentMethod);
         const updatedMethod = await paymentMethodService.updatePaymentMethod(id, paymentMethod);
         res.status(200).json(updatedMethod);
     } catch (error) {
@@ -57,10 +57,12 @@ const deletePaymentMethod = async (req, res) => {
     }
 };
 
-module.exports = {
+const paymentMethodController = {
     getPaymentMethods,
     getPaymentMethodById,
     postPaymentMethod,
     updatePaymentMethod,
     deletePaymentMethod,
 };
+
+export default paymentMethodController;

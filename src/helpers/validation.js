@@ -1,7 +1,7 @@
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const CustomError = require("./CustomError");
+import CustomError from './CustomError.js'
 
-const validateUser = (user) => {
+export const validateUser = (user) => {
     const {name, email, password} = user;
 
     if (!name || name.trim() === "") {
@@ -25,7 +25,7 @@ const validateUser = (user) => {
     }
 }
 
-const validatePaymentMethod = (paymentMethod) => {
+export const validatePaymentMethod = (paymentMethod) => {
     const { description } = paymentMethod;
 
     if (!description || typeof description !== "string" || description.trim() === "") {
@@ -37,7 +37,7 @@ const validatePaymentMethod = (paymentMethod) => {
     }
 };
 
-const validateCategory = (category) => {
+export const validateCategory = (category) => {
     const { description, transactionTypeId } = category;
 
     if (!description || typeof description !== "string" || description.trim() === "") {
@@ -49,7 +49,6 @@ const validateCategory = (category) => {
     }
 };
 
-module.exports = {validateUser, validatePaymentMethod, validateCategory}
 
 
 // if (!transactionTypeId || typeof transactionTypeId !== "number") {

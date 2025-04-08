@@ -1,6 +1,6 @@
-const userModel = require("../models/userModel");
-const CustomError = require("../helpers/CustomError");
-const bcrypt = require('bcrypt');
+import userModel from "../models/userModel.js";
+import CustomError from "../helpers/CustomError.js";
+import bcrypt from 'bcrypt'
 
 const getUsers = async() => {
     return await userModel.getUsers();
@@ -56,4 +56,4 @@ const userService = {
     verifyExistingUser
 };
 
-module.exports = userService;
+export default userService;

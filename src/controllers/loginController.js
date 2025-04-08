@@ -1,6 +1,6 @@
-const userService = require("../services/userService")
-const userValidation = require("../helpers/validation");
-const loginService = require("../services/loginService")
+import loginService from "../services/loginService.js";
+import {validateUser}  from "../helpers/validation.js";
+import userService from "../services/userService.js";
 
 const login = async (req, res) => {
     try{
@@ -16,7 +16,7 @@ const login = async (req, res) => {
 const register = async (req, res) => {
     try{
         const user = req.body;
-        userValidation.validateUser(user);
+        validateUser(user);
         await userService.postUser(user);
         res.status(201).json("Cadastro realizado com sucesso!!")
     } catch (error){
@@ -27,6 +27,6 @@ const register = async (req, res) => {
 const loginController = {
     login,
     register
-}
+};
 
-module.exports = loginController;
+export default loginController;

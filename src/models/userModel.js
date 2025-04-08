@@ -1,4 +1,5 @@
-const {PrismaClient} = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 const getUsers = async () => {
@@ -49,5 +50,4 @@ const userModel = {
     deleteUser
 };
 
-
-module.exports = userModel;
+export default userModel;

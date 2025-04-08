@@ -1,6 +1,6 @@
-const categoryModel = require("../models/categoryModel");
-const userService = require("./userService");
-const CustomError = require("../helpers/CustomError");
+import categoryModel from "../models/categoryModel.js"
+import userService from './userService.js'
+import CustomError from "../helpers/CustomError.js";
 
 const getCategories = async () => {
     return await categoryModel.getCategories();
@@ -52,7 +52,6 @@ async function verifyCategory(userId, description, id = null) {
         throw new CustomError("Categoria já cadastrada.", 400);
     }
 }
-
 const categoryService = {
     getCategories,
     getCategoryById,
@@ -63,4 +62,5 @@ const categoryService = {
     getCategoriesByUser,
 };
 
-module.exports = categoryService;
+export default categoryService;
+
