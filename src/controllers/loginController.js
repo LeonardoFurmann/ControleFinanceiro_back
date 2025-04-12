@@ -1,13 +1,13 @@
 import loginService from "../services/loginService.js";
-import {validateUser}  from "../helpers/validation.js";
+import {validateUser, validatelogin}  from "../helpers/validation.js";
 import userService from "../services/userService.js";
 
 const login = async (req, res) => {
     try{
         const login = req.body;
-        //TODO login valitation
+        validatelogin(login);
         await loginService.login(login);
-        res.json("Login realizado com sucesso");
+        res.status(200).json("Login realizado com sucesso");
     } catch (error) {
         res.status(error.statusCode || 500).json({ error: "Erro ao fazer o login: " + error.message });
     }
