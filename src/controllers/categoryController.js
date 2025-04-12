@@ -3,7 +3,9 @@ import { validateCategory}  from "../helpers/validation.js";
 
 const getCategories = async (req, res) => {
     try {
-        const categories = await categoryService.getCategories();
+        const userId = req.userId;
+        console.log(userId);
+        const categories = await categoryService.getCategories(userId);
         res.json(categories);
     } catch (error) {
         res.status(error.statusCode || 500).json({ error: "Erro ao buscar categorias: " + error.message });
@@ -35,17 +37,6 @@ const getCategoryById = async (req, res) => {
 //         res.status(error.statusCode || 500).json({ error: "Erro ao buscar categoria: " + error.message });
 //     }
 // };
-
-const getCategoriesByUser = async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const categories = await categoryService.getCategoriesByUser(userId);
-        res.json(categories);
-    } catch (error) {
-        res.status(error.statusCode || 500).json({ error: "Erro ao buscar categorias por usuário: " + error.message });
-    }
-};
-
 
 const postCategory = async (req, res) => {
     try {
@@ -86,7 +77,6 @@ const categoryController = {
     postCategory,
     updateCategory,
     deleteCategory,
-    getCategoriesByUser,
 };
 
 export default categoryController;

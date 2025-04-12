@@ -2,8 +2,9 @@ import categoryModel from "../models/categoryModel.js"
 import userService from './userService.js'
 import CustomError from "../helpers/CustomError.js";
 
-const getCategories = async () => {
-    return await categoryModel.getCategories();
+const getCategories = async (userId) => {
+    await userService.verifyExistingUser(userId);
+    return await categoryModel.findCategoriesByUser(userId);
 };
 
 const getCategoryById = async (id) => {
@@ -12,11 +13,6 @@ const getCategoryById = async (id) => {
 
 const getCategoryByDescription = async (userId, description) => {
     return await categoryModel.findCategoryByDescription(userId, description);
-};
-
-const getCategoriesByUser = async (userId) => {
-    await userService.verifyExistingUser(userId);
-    return await categoryModel.findCategoriesByUser(userId);
 };
 
 const postCategory = async (category) => {
@@ -59,7 +55,6 @@ const categoryService = {
     postCategory,
     updateCategory,
     deleteCategory,
-    getCategoriesByUser,
 };
 
 export default categoryService;

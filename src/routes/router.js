@@ -1,11 +1,13 @@
 
 import express from 'express';
-const router = express.Router();
 import userController from "../controllers/userController.js"
 import categoryController from "../controllers/categoryController.js"
 import paymentMethodController from "../controllers/paymentMethodController.js"
 import loginController from "../controllers/loginController.js"
+import { veritfyToken } from '../helpers/middlewares.js';
 
+
+const router = express.Router();
 router.get('/', (req, res)=> res.status(200).send('o router está funcionando.') )
 
 //user
@@ -21,9 +23,8 @@ router.post('/login', loginController.login);
 router.post('/register', loginController.register);
 
 //category
-router.get("/categorias", categoryController.getCategories);
+router.get("/categorias", veritfyToken, categoryController.getCategories);
 router.get("/categoria/:id", categoryController.getCategoryById);
-router.get("/categorias/usuario/:userId", categoryController.getCategoriesByUser);
 //router.get("/categoria/descricao/:description", categoryController.getCategoryByDescription);
 router.post("/categoria", categoryController.postCategory);
 router.put("/categoria/:id", categoryController.updateCategory);
