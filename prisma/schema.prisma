@@ -34,7 +34,7 @@ model Category {
 
    ransactions Transaction[]
 
-   @@unique([description])
+   @@unique([userId, description])
    @@map("categories")
 }
 
