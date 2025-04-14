@@ -2,13 +2,18 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const getPaymentMethods = async () => {
-    return await prisma.paymentMethod.findMany();
+const getPaymentMethods = async (userId) => {
+    return await prisma.paymentMethod.findMany({
+        where: { userId: userId}
+    });
 };
 
-const findPaymentMethodById = async (id) => {
+const findPaymentMethodById = async (userId, id) => {
     return await prisma.paymentMethod.findUnique({
-        where: { id: parseInt(id) },
+        where: { 
+            id: parseInt(id),
+            userId: userId
+        },
     });
 };
 
@@ -18,31 +23,31 @@ const getPaymentMethodsByUser = async (userId) => {
     });
 };
 
-const postPaymentMethod = async (paymentMethod) => {
+const postPaymentMethod = async (userId, paymentMethod) => {
     return await prisma.paymentMethod.create({
         data: { 
-            description: paymentMethod.description ,
-            userId: parseInt(paymentMethod.userId),
+            description: paymentMethod.description,
+            userId,
         },
     });
 };
 
-const updatePaymentMethod = async (id, paymentMethod) => {
+const updatePaymentMethod = async (userId, id, paymentMethod) => {
     return await prisma.paymentMethod.update({
-        where: { id: parseInt(id) },
+        where: { id: parseInt(id), userId },
         data: { description: paymentMethod.description },
     });
 };
 
-const deletePaymentMethod = async (id) => {
+const deletePaymentMethod = async (userId, id) => {
     return await prisma.paymentMethod.delete({
-        where: { id: parseInt(id) },
+        where: { id: parseInt(id), userId},
     });
 };
 
-const findPaymentMethodByDescription = async (description) => {
+const findPaymentMethodByDescription = async (userId, description) => {
     return await prisma.paymentMethod.findFirst({
-        where: { description },
+        where: { description, userId},
     });
 };
 

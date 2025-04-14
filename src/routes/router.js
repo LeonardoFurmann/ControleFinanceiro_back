@@ -32,11 +32,11 @@ router.delete("/categoria/:id", verifyToken, categoryController.deleteCategory);
 
 
 //paymentMethod
-router.get("/paymentmethods", paymentMethodController.getPaymentMethods);
-router.get("/paymentmethods/:id", paymentMethodController.getPaymentMethodById);
-router.post("/paymentmethods", paymentMethodController.postPaymentMethod);
-router.put("/paymentmethods/:id", paymentMethodController.updatePaymentMethod);
-router.delete("/paymentmethods/:id", paymentMethodController.deletePaymentMethod);
+router.get("/paymentmethods", verifyToken, paymentMethodController.getPaymentMethods);
+router.get("/paymentmethods/:id", verifyToken, paymentMethodController.getPaymentMethodById);
+router.post("/paymentmethods", verifyToken, paymentMethodController.postPaymentMethod);
+router.put("/paymentmethods/:id", verifyToken, paymentMethodController.updatePaymentMethod);
+router.delete("/paymentmethods/:id", verifyToken, paymentMethodController.deletePaymentMethod);
 
 
 
