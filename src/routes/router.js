@@ -4,7 +4,7 @@ import userController from "../controllers/userController.js"
 import categoryController from "../controllers/categoryController.js"
 import paymentMethodController from "../controllers/paymentMethodController.js"
 import loginController from "../controllers/loginController.js"
-import { veritfyToken } from '../helpers/middlewares.js';
+import { verifyToken } from '../helpers/middlewares.js';
 
 
 const router = express.Router();
@@ -23,12 +23,12 @@ router.post('/login', loginController.login);
 router.post('/register', loginController.register);
 
 //category
-router.get("/categorias", veritfyToken, categoryController.getCategories);
-router.get("/categoria/:id", categoryController.getCategoryById);
-//router.get("/categoria/descricao/:description", categoryController.getCategoryByDescription);
-router.post("/categoria", categoryController.postCategory);
-router.put("/categoria/:id", categoryController.updateCategory);
-router.delete("/categoria/:id", categoryController.deleteCategory);
+router.get("/categorias", verifyToken, categoryController.getCategories);
+router.get("/categoria/:id", verifyToken, categoryController.getCategoryById);
+router.get("/categoria/descricao/:description", verifyToken, categoryController.getCategoryByDescription);
+router.post("/categoria", verifyToken, categoryController.postCategory);
+router.put("/categoria/:id", verifyToken, categoryController.updateCategory);
+router.delete("/categoria/:id", verifyToken, categoryController.deleteCategory);
 
 
 //paymentMethod

@@ -4,7 +4,6 @@ import { validateCategory}  from "../helpers/validation.js";
 const getCategories = async (req, res) => {
     try {
         const userId = req.userId;
-        console.log(userId);
         const categories = await categoryService.getCategories(userId);
         res.json(categories);
     } catch (error) {
@@ -14,8 +13,9 @@ const getCategories = async (req, res) => {
 
 const getCategoryById = async (req, res) => {
     try {
-        const { id } = req.params;
-        const category = await categoryService.getCategoryById(id);
+        const userId = req.userId;
+        const {id} = req.params;
+        const category = await categoryService.getCategoryById(userId, id);
         if (!category) {
             return res.status(404).json({ error: "Categoria não encontrada" });
         }
@@ -25,25 +25,27 @@ const getCategoryById = async (req, res) => {
     }
 };
 
-// const getCategoryByDescription = async (req, res) => {
-//     try {
-//         const { description } = req.params;
-//         const category = await categoryService.getCategoryByDescription(description);
-//         if (!category) {
-//             return res.status(404).json({ error: "Categoria não encontrada" });
-//         }
-//         res.json(category);
-//     } catch (error) {
-//         res.status(error.statusCode || 500).json({ error: "Erro ao buscar categoria: " + error.message });
-//     }
-// };
+const getCategoryByDescription = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const {description} = req.params;
+        const category = await categoryService.getCategoryByDescription(userId, description);
+        if (!category) {
+            return res.status(404).json({ error: "Categoria não encontrada" });
+        }
+        res.json(category);
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ error: "Erro ao buscar categoria: " + error.message });
+    }
+};
 
 const postCategory = async (req, res) => {
     try {
+        const userId = req.userId;
         const category = req.body;
         validateCategory(category);
-        await categoryService.postCategory(category);
-        res.status(201).json("Categoria cadastrada com sucesso.");
+        await categoryService.postCategory(userId, category);
+        res.status(201).json({message: "Categoria cadastrada com sucesso."});
     } catch (error) {
         res.status(error.statusCode || 500).json({ error: "Erro ao cadastrar categoria: " + error.message });
     }
@@ -51,10 +53,11 @@ const postCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
     try {
-        const { id } = req.params;
+        const userId = req.userId;
+        const {id} = req.params;
         const category = req.body;
         validateCategory(category);
-        const updatedCategory = await categoryService.updateCategory(id, category);
+        const updatedCategory = await categoryService.updateCategory(userId, id, category);
         res.status(200).json(updatedCategory);
     } catch (error) {
         res.status(error.statusCode || 500).json({ error: "Erro ao editar a categoria: " + error.message });
@@ -63,9 +66,10 @@ const updateCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
     try {
-        const { id } = req.params;
-        await categoryService.deleteCategory(id);
-        res.status(200).json("Categoria deletada com sucesso");
+        const userId = req.userId;
+        const {id} = req.params;
+        await categoryService.deleteCategory(userId, id);
+        res.status(200).json({message: "Categoria deletada com sucesso"});
     } catch (error) {
         res.status(error.statusCode || 500).json({ error: "Erro ao deletar a categoria: " + error.message });
     }
@@ -74,6 +78,7 @@ const deleteCategory = async (req, res) => {
 const categoryController = {
     getCategories,
     getCategoryById,
+    getCategoryByDescription,
     postCategory,
     updateCategory,
     deleteCategory,

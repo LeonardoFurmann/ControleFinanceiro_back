@@ -1,40 +1,36 @@
 import categoryModel from "../models/categoryModel.js"
-import userService from './userService.js'
 import CustomError from "../helpers/CustomError.js";
 
 const getCategories = async (userId) => {
-    await userService.verifyExistingUser(userId);
     return await categoryModel.findCategoriesByUser(userId);
 };
 
-const getCategoryById = async (id) => {
-    return await categoryModel.findCategoryById(id);
+const getCategoryById = async (userId, id) => {
+    return await categoryModel.findCategoryById(userId, id);
 };
 
 const getCategoryByDescription = async (userId, description) => {
     return await categoryModel.findCategoryByDescription(userId, description);
 };
 
-const postCategory = async (category) => {
-    await userService.verifyExistingUser(category.userId);
-    await verifyCategory(category.userId, category.description);
-    await categoryModel.postCategory(category);
+const postCategory = async (userId, category) => {
+    await verifyCategory(userId, category.description);
+    await categoryModel.postCategory(userId, category);
 };
 
-const updateCategory = async (id, category) => {
-    await userService.verifyExistingUser(category.userId);
-    await verifyExistingCategory(id);
-    await verifyCategory(category.userId, category.description, id);
-    return await categoryModel.updateCategory(id, category);
+const updateCategory = async (userId, id, category) => {
+    await verifyExistingCategory(userId, id);
+    await verifyCategory(userId, category.description, id);
+    return await categoryModel.updateCategory(userId, id, category);
 };
 
-const deleteCategory = async (id) => {
-    await verifyExistingCategory(id);
-    return await categoryModel.deleteCategory(id);
+const deleteCategory = async (userId, id) => {
+    await verifyExistingCategory(userId, id);
+    return await categoryModel.deleteCategory(userId, id);
 };
 
-async function verifyExistingCategory(id) {
-    const existingCategory = await categoryModel.findCategoryById(id);
+async function verifyExistingCategory(userId, id) {
+    const existingCategory = await categoryModel.findCategoryById(userId, id);
     if (!existingCategory) {
         throw new CustomError("Categoria não encontrada", 404);
     } else {

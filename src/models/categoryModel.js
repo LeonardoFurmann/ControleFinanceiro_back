@@ -12,32 +12,40 @@ const findCategoriesByUser = async (userId) => {
     });
 };
 
-const findCategoryById = async (id) => {
+const findCategoryById = async (userId, id) => {
     return await prisma.category.findUnique({
-        where: { id: parseInt(id) },
+        where: { 
+            id: parseInt(id),
+            userId: userId,
+         },
     });
 };
 
-const postCategory = async (category) => {
-    console.log(category)
+const postCategory = async (userId, category) => {
     await prisma.category.create({
         data: {
             description: category.description,
-            userId: category.userId,
+            userId: userId,
         },
     });
 };
 
-const updateCategory = async (id, category) => {
+const updateCategory = async (userId, id, category) => {
     return await prisma.category.update({
-        where: { id: parseInt(id) },
+        where: { 
+            id: parseInt(id),
+            userId: userId
+        },
         data: category,
     });
 };
 
-const deleteCategory = async (id) => {
+const deleteCategory = async (userId, id) => {
     return await prisma.category.delete({
-        where: { id: parseInt(id) },
+        where: { 
+            id: parseInt(id) ,
+            userId: userId
+        },
     });
 };
 
