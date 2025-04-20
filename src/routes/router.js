@@ -3,6 +3,7 @@ import express from 'express';
 import userController from "../controllers/userController.js"
 import categoryController from "../controllers/categoryController.js"
 import paymentMethodController from "../controllers/paymentMethodController.js"
+import transactionController from '../controllers/transactionController.js';
 import loginController from "../controllers/loginController.js"
 import { verifyToken } from '../helpers/middlewares.js';
 
@@ -30,7 +31,6 @@ router.post("/categoria", verifyToken, categoryController.postCategory);
 router.put("/categoria/:id", verifyToken, categoryController.updateCategory);
 router.delete("/categoria/:id", verifyToken, categoryController.deleteCategory);
 
-
 //paymentMethod
 router.get("/paymentmethods", verifyToken, paymentMethodController.getPaymentMethods);
 router.get("/paymentmethods/:id", verifyToken, paymentMethodController.getPaymentMethodById);
@@ -38,6 +38,8 @@ router.post("/paymentmethods", verifyToken, paymentMethodController.postPaymentM
 router.put("/paymentmethods/:id", verifyToken, paymentMethodController.updatePaymentMethod);
 router.delete("/paymentmethods/:id", verifyToken, paymentMethodController.deletePaymentMethod);
 
+//transaction
+router.post("/transaction", verifyToken, transactionController.postTransaction);
 
 
 export default router;
