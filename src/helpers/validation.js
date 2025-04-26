@@ -68,6 +68,39 @@ export const validatelogin = ({email, password}) => {
     // }
 };
 
+export const validateTransaction = ({ data, amount, categoryId, transactionTypeId, paymentMethodId }) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (data > today) {
+        throw new CustomError("Data inválida: não pode ser no futuro.");
+      }
+
+    if (!data || data.trim() === "") {
+        throw new CustomError("O campo data deve ser preenchido");
+    }
+
+    if (!amount || amount.isNan()) {
+        throw new CustomError("O campo valor deve ser preenchido corretamente", 400);
+    }
+
+    if (amount < 0) {
+        throw new CustomError("O valor não pode ser negativo", 400);
+    }
+
+    if (!categoryId || categoryId.isNan()) {
+        throw new CustomError("O campo categoria deve ser preenchido corretamente", 400);
+    }
+
+    if (!transactionTypeId || transactionTypeId.isNan()) {
+        throw new CustomError("O campo tipo de transação deve ser preenchido corretamente", 400);
+    }
+
+    if (!paymentMethodId || paymentMethodId.isNan()) {
+        throw new CustomError("O campo método de pagamento deve ser preenchido corretamente", 400);
+    } 
+};
+
 
 
 // if (!transactionTypeId || typeof transactionTypeId !== "number") {
