@@ -1,100 +1,106 @@
 generator client {
-   provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-   provider = "postgresql"
-   url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-   id        Int      @id @default(autoincrement())
-   name      String   @db.VarChar(255)
-   email     String   @unique @db.VarChar(255)
-   password  String   @db.Text
-   createdAt DateTime @default(now()) @map("created_at")
-   updatedAt DateTime @updatedAt @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-   categories    Category[]
-   transactions  Transaction[]
-   //transactionMouths  TransactionMouth[]
-   PaymentMethod PaymentMethod[]
+  categories    Category[] 
+  transactions  Transaction[] 
+  paymentMethod PaymentMethod[]
 
-   @@map("users")
+  @@map("users")
 }
 
 model Category {
-   id          Int      @id @default(autoincrement())
-   description String   @db.VarChar(255)
-   userId      Int
-   createdAt   DateTime @default(now()) @map("created_at")
-   updatedAt   DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  description String   @db.VarChar(255)
+  userId      Int      @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
 
-   ransactions Transaction[]
+  @@unique([userId, description])
+  @@index([userId])
 
-   @@unique([userId, description])
-   @@map("categories")
+  @@map("categories")
 }
 
 model TransactionType {
-   id          Int      @id @default(autoincrement())
-   description String   @db.VarChar(255)
-   createdAt   DateTime @default(now()) @map("created_at")
-   updatedAt   DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  description String   @db.VarChar(255)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-   Transaction Transaction[]
+  transactions Transaction[]
 
-   @@map("transaction_types")
+  @@map("transaction_types")
 }
 
 model PaymentMethod {
-   id          Int      @id @default(autoincrement())
-   description String   @db.VarChar(255)
-   userId      Int
-   createdAt   DateTime @default(now()) @map("created_at")
-   updatedAt   DateTime @updatedAt @map("updated_at")
+  id          Int      @id @default(autoincrement())
+  description String   @db.VarChar(255)
+  userId      Int      @map("user_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
-   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
 
-   transactions Transaction[]
+  @@unique([userId, description])
 
-   @@map("payment_methods")
+  @@index([userId])
+  @@map("payment_methods")
 }
 
 model Transaction {
-   id                Int      @id @default(autoincrement())
-   date              DateTime
-   amount            Decimal  @db.Decimal(10, 2)
-   categoryId        Int
-   transactionTypeId Int
-   userId            Int
-   paymentMethodId   Int
-   createdAt         DateTime @default(now()) @map("created_at")
-   updatedAt         DateTime @updatedAt @map("updated_at")
+  id                Int      @id @default(autoincrement())
+  date              DateTime
+  amount            Decimal  @db.Decimal(10, 2)
+  categoryId        Int      @map("category_id")
+  transactionTypeId Int      @map("transaction_type_id")
+  userId            Int      @map("user_id")
+  paymentMethodId   Int      @map("payment_method_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
-   category        Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-   transactionType TransactionType @relation(fields: [transactionTypeId], references: [id], onDelete: Cascade)
-   user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-   paymentMethod   PaymentMethod   @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
+  category        Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  transactionType TransactionType @relation(fields: [transactionTypeId], references: [id], onDelete: Cascade)
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  paymentMethod   PaymentMethod   @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
 
-   @@map("transactions")
+  @@index([userId, date])
+  @@index([userId, transactionTypeId])
+  @@index([categoryId])    
+  @@index([paymentMethodId])
+
+  @@map("transactions")
 }
 
 // model TransactionMouth {
-//    id         Int      @id @default(autoincrement())
-//    month      Int
-//    year       Int
-//    total      Float
-//    amountIn   Float
-//    amountOut  Float
-//    userId     Int
-//    createdAt  DateTime @default(now()) @map("created_at")
-//    updatedAt  DateTime @updatedAt @map("updated_at")
+//   id         Int      @id @default(autoincrement())
+//   month      Int
+//   year       Int
+//   total      Float
+//   amountIn   Float     @map("amount_in")
+//   amountOut  Float     @map("amount_out")
+//   userId     Int       @map("user_id")
+//   createdAt  DateTime  @default(now()) @map("created_at")
+//   updatedAt  DateTime  @updatedAt @map("updated_at")
 
-//    // Chave estrangeira
-//    user       User @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-//    @@map("transaction_months")
+//   @@map("transaction_months")
 // }
