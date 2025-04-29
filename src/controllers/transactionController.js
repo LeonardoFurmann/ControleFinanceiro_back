@@ -16,9 +16,12 @@ const postTransaction = async (req, res) => {
 const getTransactionsByMonth = async (req, res) => {
     try{
         const userId = req.userId;
-        const {month} = req.params;
+        const {year, month} = req.body;
+
+        const parsedYear = Number(year);
+        const parsedMonth = Number(month);
        
-        const transactionMonth =  await transactionService.getTransactionsByMonth(userId, month);
+        const transactionMonth =  await transactionService.getTransactionsByMonth(userId, parsedYear, parsedMonth);
 
         res.status(201).json(transactionMonth);
     } catch (error){

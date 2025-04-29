@@ -1,4 +1,4 @@
-export default class TransactionMounth{
+export default class TransactionMonth{
 
     constructor(amountIn, amountOut, total){
 

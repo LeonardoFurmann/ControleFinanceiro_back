@@ -15,13 +15,8 @@ const postTransaction = async (userId, transaction) => {
     });
 };
 
-const getAmountByMonth = async (userId, month) => {
-
-    const amounts = await prisma.$queryRawTyped(getTransactionsAmountByMonth(userId, month))
-
-    console.log(amounts)
-
-    return amounts
+const getAmountByMonth = async (userId, startDate, endDate) => {  
+    return await prisma.$queryRawTyped(getTransactionsAmountByMonth(userId, startDate, endDate))
 }
 
 

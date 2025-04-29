@@ -40,7 +40,7 @@ router.delete("/paymentmethods/:id", verifyToken, paymentMethodController.delete
 
 //transaction
 router.post("/transaction", verifyToken, transactionController.postTransaction);
-router.get("/transaction/:month", verifyToken, transactionController.getTransactionsByMonth)
+router.get("/transaction/month", verifyToken, transactionController.getTransactionsByMonth)
 //router.get("/transaction/:year", verifyToken, transactionController.getTransactionsByYear)
 
 

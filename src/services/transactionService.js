@@ -1,15 +1,20 @@
 import transactionModel from "../models/transactionModel.js"
-import TransactionMounth from "../beans/TransactionMonth.js"
+import TransactionMonth from "../beans/TransactionMonth.js"
 
 const postTransaction = async(userId, transaction) => {
     transactionModel.postTransaction(userId, transaction);
 }
 
-const getTransactionsByMonth = async( userId, month ) => {
-    console.log(month)
-    const amounts = await transactionModel.getAmountByMonth(userId, month);
+const getTransactionsByMonth = async( userId, year, month) => {
+    
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 1);
+    
+    const amounts = await transactionModel.getAmountByMonth(userId, startDate, endDate);
 
-    let transactionMouth  = new TransactionMounth();
+    console.log(amounts);
+
+    let transactionMonth  = new TransactionMonth();
 
 }
 
