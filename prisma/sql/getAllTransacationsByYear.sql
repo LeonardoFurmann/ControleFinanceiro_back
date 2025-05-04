@@ -2,7 +2,7 @@ SELECT
   t.id,
   t.date,
   t.amount,
-  tt.description AS "transactionType",
+  tt.id AS "transactionType",
   c.description AS "category",
   p.description AS "paymentMethod"
 FROM transactions t
