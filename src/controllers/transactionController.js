@@ -23,7 +23,7 @@ const getTransactionsByMonth = async (req, res) => {
        
         const transactionMonth =  await transactionService.getTransactionsByMonth(userId, parsedYear, parsedMonth);
 
-        res.status(201).json(transactionMonth);
+        res.status(200).json(transactionMonth);
     } catch (error){
         res.status(error.statusCode || 500).json({ error: "Erro ao buscar as transações por mês: " + error.message });
     }

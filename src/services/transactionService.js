@@ -7,14 +7,30 @@ const postTransaction = async(userId, transaction) => {
 
 const getTransactionsByMonth = async( userId, year, month) => {
     
+    
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 1);
     
     const amounts = await transactionModel.getAmountByMonth(userId, startDate, endDate);
+    
+    const amountIn = getAmountByType(amounts, 1)
+    const amountOut = getAmountByType(amounts, 2)
+    const total =  amountIn - amountOut ;
+    
+    let transactionMonth  = new TransactionMonth(amountIn, amountOut, total);
 
-    console.log(amounts);
+    console.log(transactionMonth);
 
-    let transactionMonth  = new TransactionMonth();
+    return transactionMonth
+}
+
+
+function getAmountByType(amounts, type){
+
+    const transactionAmount = amounts.find(a => a.transaction_type_id == type);
+    const amount = transactionAmount ? transactionAmount.total : 0
+
+    return Number(amount)
 
 }
 
