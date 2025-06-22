@@ -1,7 +1,6 @@
 
 
-function getAmountByCategory(transactions){
-    
+function getAmountByCategory(transactions){ 
     const amountByCategory = transactions
         .reduce((acc, curr) => {       
             const existing = acc.find(item => item.category === curr.category);
@@ -21,11 +20,30 @@ function getAmountByCategory(transactions){
    return amountByCategory;
 }
 
+function getAmountByPaymentMethod(transactions){ 
+    const amountByPaymentMethod = transactions
+        .reduce((acc, curr) => {       
+            const existing = acc.find(item => item.paymentMethod === curr.paymentMethod);
+            if (existing) {
+                existing.amount += Number(curr.amount);
+            } else {
+                acc.push({ 
+                    paymentMethod: curr.category, 
+                    amount: Number(curr.amount),
+                });
+            }
+
+            return acc;
+    }, []);
+
+   return amountByPaymentMethod;
+}
+
 function getAmountByDay(transactions){
     const amountByDay = transactions
         .reduce((acc, curr) => {
-            const day = curr.date.toISOString().slice(0,10); 
-            const existing = acc.find(item => item.day === dia)
+            const day = curr.day;
+            const existing = acc.find(item => item.day === day)
             if (existing) {
                 existing.amount +=Number(curr.amount);
             } else {
@@ -42,11 +60,34 @@ function getAmountByDay(transactions){
 
 }
 
+function getMostAmountCategory(amountByCategory){
+    
+    let biggestAmount = 0;
+    let category;
+
+    amountByCategory.forEach(a => {      
+        if (a.amount > biggestAmount) {
+            biggestAmount = a.amount
+            category = a.category
+        }                 
+    });
+
+    const mostAmountCategory = {
+        amount: biggestAmount,
+        category: category
+    }
+
+    return mostAmountCategory;
+    
+}
+
 
 
 const dashboardService = {
     getAmountByCategory,
-    getAmountByDay
+    getAmountByDay,
+    getAmountByPaymentMethod,
+    getMostAmountCategory
 }
 
 export default dashboardService;

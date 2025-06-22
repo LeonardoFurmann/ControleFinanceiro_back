@@ -1,6 +1,6 @@
 import transactionModel from "../models/transactionModel.js"
 import TransactionMonth from "../beans/TransactionMonth.js"
-import { ENTRADA, SAIDA } from "../helpers/constants.js";
+import { IN, OUT } from "../helpers/constants.js";
 import dashboardService from "./dashboardService.js";
 
 const postTransaction = async(userId, transaction) => {
@@ -13,8 +13,8 @@ const getTransactionsByMonth = async( userId, year, month) => {
     const endDate = new Date(year, month, 1);
  
     const amounts = await transactionModel.getAmountByMonth(userId, startDate, endDate);
-    const amountIn = getAmountByType(amounts, ENTRADA)
-    const amountOut = getAmountByType(amounts, SAIDA)
+    const amountIn = getAmountByType(amounts, IN)
+    const amountOut = getAmountByType(amounts, OUT)
     const total =  amountIn - amountOut;
 
     let dashboard = {};
@@ -22,10 +22,11 @@ const getTransactionsByMonth = async( userId, year, month) => {
     
     transactions = await transactionModel.getTransactionsByMonth(userId, startDate, endDate);
     
-    dashboard.amountByCategory = dashboardService.getAmountByCategory(transactions);
-    //dashboard.amountByCategoryOut = dashboardService.getAmountByCategory(transactions, SAIDA);
-    //dashboard.amountByDayIn = dashboardService.getAmountByDay(transactions, ENTRADA);
+    const amountByCategory = dashboardService.getAmountByCategory(transactions);
+    dashboard.amountByCategory = amountByCategory;
     dashboard.amountByDay = dashboardService.getAmountByDay(transactions);
+    dashboard.amountByPaymentMehod = dashboardService.getAmountByPaymentMethod(transactions);
+    dashboard.mostAmountCategory = dashboardService.getMostAmountCategory(amountByCategory);
 
     const transactionMonth  = new TransactionMonth(amountIn, amountOut, total, dashboard, transactions);
 

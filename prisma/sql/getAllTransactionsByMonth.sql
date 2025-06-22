@@ -1,6 +1,7 @@
 SELECT
   t.id,
   t.date,
+  EXTRACT(DAY FROM t.date) AS day,
   t.amount,
   tt.id AS "transactionType",
   c.description AS "category",
