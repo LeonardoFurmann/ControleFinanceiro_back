@@ -3,7 +3,8 @@
 function getAmountByCategory(transactions){ 
     const amountByCategory = transactions
         .reduce((acc, curr) => {       
-            const existing = acc.find(item => item.category === curr.category);
+            const existing = acc.find(item => item.category === curr.category &&
+                                              item.type === curr.transactionType);
             if (existing) {
                 existing.amount += Number(curr.amount);
             } else {
@@ -23,13 +24,16 @@ function getAmountByCategory(transactions){
 function getAmountByPaymentMethod(transactions){ 
     const amountByPaymentMethod = transactions
         .reduce((acc, curr) => {       
-            const existing = acc.find(item => item.paymentMethod === curr.paymentMethod);
+            const existing = acc.find(item => item.paymentMethod === curr.paymentMethod &&
+                                              item.type === curr.transactionType
+            );
             if (existing) {
                 existing.amount += Number(curr.amount);
             } else {
                 acc.push({ 
-                    paymentMethod: curr.category, 
+                    paymentMethod: curr.paymentMethod, 
                     amount: Number(curr.amount),
+                    type: curr.transactionType
                 });
             }
 
@@ -43,7 +47,8 @@ function getAmountByDay(transactions){
     const amountByDay = transactions
         .reduce((acc, curr) => {
             const day = curr.day;
-            const existing = acc.find(item => item.day === day)
+            const existing = acc.find(item => item.day === day &&
+                                              item.type === curr.transactionType)
             if (existing) {
                 existing.amount +=Number(curr.amount);
             } else {
@@ -60,8 +65,7 @@ function getAmountByDay(transactions){
 
 }
 
-function getMostAmountCategory(amountByCategory){
-    
+function getMostAmountCategory(amountByCategory){  
     let biggestAmount = 0;
     let category;
 
@@ -77,17 +81,16 @@ function getMostAmountCategory(amountByCategory){
         category: category
     }
 
-    return mostAmountCategory;
-    
+    return mostAmountCategory;  
 }
 
 
 
-const dashboardService = {
+const dashboardMonthService = {
     getAmountByCategory,
     getAmountByDay,
     getAmountByPaymentMethod,
     getMostAmountCategory
 }
 
-export default dashboardService;
+export default dashboardMonthService;

@@ -29,9 +29,26 @@ const getTransactionsByMonth = async (req, res) => {
     }
 }
 
+
+const getTransactionsByYear = async (req, res) => {
+    try{
+        const userId = req.userId;
+        const {year} = req.body;
+
+        const parsedYear = Number(year);
+
+        const transactionYear =  await transactionService.getTransactionsByYear(userId, parsedYear);
+
+        res.status(200).json(transactionYear);
+    } catch (error){
+        res.status(error.statusCode || 500).json({ error: "Erro ao buscar as transações por ano: " + error.message });
+    }
+}
+
 const transactionController = {
     postTransaction,
-    getTransactionsByMonth
+    getTransactionsByMonth,
+    getTransactionsByYear
 }
 
 export default transactionController

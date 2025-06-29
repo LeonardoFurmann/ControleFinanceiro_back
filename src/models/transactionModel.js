@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import {getTransactionsAmountByMonth, getAllTransactionsByMonth } from '@prisma/client/sql'
+import {getTransactionsAmountByMonth, getAllTransactionsByMonth, getAllTransactionsByYear } from '@prisma/client/sql'
 const prisma = new PrismaClient();
 
 const postTransaction = async (userId, transaction) => {
@@ -23,11 +23,16 @@ const getTransactionsByMonth = async (userId, startDate, endDate) => {
     return await prisma.$queryRawTyped(getAllTransactionsByMonth(userId, startDate, endDate))
 }
 
+const getTransactionsByYear = async (userId, startDate, endDate) => {  
+    return await prisma.$queryRawTyped(getAllTransactionsByYear(userId, startDate, endDate))
+}
+
 
 const transactionModel = {
     postTransaction,
     getAmountByMonth,
-    getTransactionsByMonth
+    getTransactionsByMonth,
+    getTransactionsByYear
 }
 
 export default transactionModel
