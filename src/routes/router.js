@@ -13,23 +13,23 @@ router.get('/', (req, res)=> res.status(200).send('o router está funcionando.')
 
 //user
 //TODO ver o que retirar e talvez mudar pra profile
-router.get('/usuarios', userController.getUsers);
-router.get('/usuario/:id', userController.getUserById);
-router.get('/usuario/email/:email', userController.getUserByEmail);
-router.put('/usuario/:id', userController.updateUser);
-router.delete('/usuario/:id', userController.deleteUser);
+router.get('/users', userController.getUsers);
+router.get('/users/:id', userController.getUserById);
+router.get('/users/email/:email', userController.getUserByEmail);
+router.put('/users/:id', userController.updateUser);
+router.delete('/users/:id', userController.deleteUser);
 
 //login
 router.post('/login', loginController.login);
 router.post('/register', loginController.register);
 
 //category
-router.get("/categorias", verifyToken, categoryController.getCategories);
-router.get("/categoria/:id", verifyToken, categoryController.getCategoryById);
-router.get("/categoria/descricao/:description", verifyToken, categoryController.getCategoryByDescription);
-router.post("/categoria", verifyToken, categoryController.postCategory);
-router.put("/categoria/:id", verifyToken, categoryController.updateCategory);
-router.delete("/categoria/:id", verifyToken, categoryController.deleteCategory);
+router.get("/categories", verifyToken, categoryController.getCategories);
+router.get("/category/:id", verifyToken, categoryController.getCategoryById);
+router.get("/category/description/:description", verifyToken, categoryController.getCategoryByDescription);
+router.post("/category", verifyToken, categoryController.postCategory);
+router.put("/category/:id", verifyToken, categoryController.updateCategory);
+router.delete("/category/:id", verifyToken, categoryController.deleteCategory);
 
 //paymentMethod
 router.get("/paymentmethods", verifyToken, paymentMethodController.getPaymentMethods);
