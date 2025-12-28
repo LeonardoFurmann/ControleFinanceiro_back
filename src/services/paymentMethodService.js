@@ -2,11 +2,13 @@ import paymentMethodModel from "../models/paymentMethodModel.js"
 import CustomError from "../helpers/CustomError.js";
 
 const getPaymentMethods = async (userId) => {
-    return await paymentMethodModel.getPaymentMethods(userId);
+    const paymentsMethods =  await paymentMethodModel.getPaymentMethods(userId);
+    return paymentsMethods.map(e => toResponse(e));
 };
 
 const getPaymentMethodById = async (userId, id) => {
-    return await paymentMethodModel.findPaymentMethodById(userId, id);
+    const paymentMethod = await paymentMethodModel.findPaymentMethodById(userId, id);
+    return toResponse(paymentMethod);
 };
 
 const postPaymentMethod = async (userId, paymentMethod) => {
@@ -34,6 +36,13 @@ async function verifyPaymentMethod(userId, description, id = null) {
     const existingMethod = await paymentMethodModel.findPaymentMethodByDescription(userId, description);
     if (existingMethod && (!id || existingMethod.id !== parseInt(id))) {
         throw new CustomError("Já existe um método de pagamento com essa descrição.", 400);
+    }
+}
+
+function toResponse(paymentMethod){
+    return {
+       id: paymentMethod.id,
+       description: paymentMethod.description
     }
 }
 

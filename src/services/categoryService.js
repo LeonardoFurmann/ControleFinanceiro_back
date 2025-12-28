@@ -2,15 +2,18 @@ import categoryModel from "../models/categoryModel.js"
 import CustomError from "../helpers/CustomError.js";
 
 const getCategories = async (userId) => {
-    return await categoryModel.findCategoriesByUser(userId);
+    const categories = await categoryModel.findCategoriesByUser(userId);
+    return categories.map(e => toResponse(e));
 };
 
 const getCategoryById = async (userId, id) => {
-    return await categoryModel.findCategoryById(userId, id);
+    const category = await categoryModel.findCategoryById(userId, id);
+    return toResponse(category);
 };
 
 const getCategoryByDescription = async (userId, description) => {
-    return await categoryModel.findCategoryByDescription(userId, description);
+    const category = await categoryModel.findCategoryByDescription(userId, description);
+    return toResponse(category);
 };
 
 const postCategory = async (userId, category) => {
@@ -44,6 +47,15 @@ async function verifyCategory(userId, description, id = null) {
         throw new CustomError("Categoria já cadastrada.", 400);
     }
 }
+
+
+function toResponse(category){
+    return {
+       id: category.id,
+       description: category.description
+    }
+}
+
 const categoryService = {
     getCategories,
     getCategoryById,
