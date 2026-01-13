@@ -6,6 +6,7 @@ import paymentMethodController from "../controllers/paymentMethodController.js"
 import transactionController from '../controllers/transactionController.js';
 import loginController from "../controllers/loginController.js"
 import { verifyToken } from '../helpers/middlewares.js';
+import transactionTypeController from '../controllers/transactionTypeController.js';
 
 
 const router = express.Router();
@@ -24,7 +25,7 @@ router.post('/login', loginController.login);
 router.post('/register', loginController.register);
 
 //category
-router.get("/categories", verifyToken, categoryController.getCategories);
+router.get("/category", verifyToken, categoryController.getCategories);
 router.get("/category/:id", verifyToken, categoryController.getCategoryById);
 router.get("/category/description/:description", verifyToken, categoryController.getCategoryByDescription);
 router.post("/category", verifyToken, categoryController.postCategory);
@@ -43,5 +44,7 @@ router.post("/transaction", verifyToken, transactionController.postTransaction);
 router.get("/transaction/month", verifyToken, transactionController.getTransactionsByMonth)
 router.get("/transaction/year", verifyToken, transactionController.getTransactionsByYear)
 
+//transactionType
+router.get("/transactiontype", verifyToken, transactionTypeController.getTransactionTypes);
 
 export default router;
