@@ -68,7 +68,7 @@ export const validatelogin = ({email, password}) => {
     // }
 };
 
-export const validateTransaction = ({ date, amount, categoryId, transactionTypeId, paymentMethodId }) => {
+export const validateTransaction = ({ date, amount, category, transactionType, paymentMethod }) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -88,15 +88,15 @@ export const validateTransaction = ({ date, amount, categoryId, transactionTypeI
         throw new CustomError("O valor não pode ser negativo", 400);
     }
 
-    if (!categoryId || !typeof categoryIdNumber == "number") {
+    if (!category || !typeof category == "number") {
         throw new CustomError("O campo categoria deve ser preenchido corretamente", 400);
     }
 
-    if (!transactionTypeId || !typeof transactionTypeId == "number") {
+    if (!transactionType || !typeof transactionType == "number") {
         throw new CustomError("O campo tipo de transação deve ser preenchido corretamente", 400);
     }
 
-    if (!paymentMethodId || !typeof paymentMethodId == "number") {
+    if (!paymentMethod || !typeof paymentMethod == "number") {
         throw new CustomError("O campo método de pagamento deve ser preenchido corretamente", 400);
     } 
 };

@@ -7,9 +7,9 @@ const postTransaction = async (userId, transaction) => {
         data: { 
             date: new Date(transaction.date),
             amount: transaction.amount,
-            categoryId: transaction.categoryId,
-            transactionTypeId: transaction.transactionTypeId,
-            paymentMethodId: transaction.paymentMethodId,
+            categoryId: transaction.category,
+            transactionTypeId: transaction.transactionType,
+            paymentMethodId: transaction.paymentMethod,
             userId,
         },
     });
