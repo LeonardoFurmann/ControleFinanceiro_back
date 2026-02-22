@@ -10,6 +10,7 @@ const postTransaction = async (userId, transaction) => {
             categoryId: transaction.category,
             transactionTypeId: transaction.transactionType,
             paymentMethodId: transaction.paymentMethod,
+            observation: transaction.observation,
             userId,
         },
     });

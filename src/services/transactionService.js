@@ -14,8 +14,8 @@ const getTransactionsByMonth = async( userId, year, month) => {
     const endDate = new Date(year, month, 1);
 
     const amounts = await transactionModel.getAmountByMonth(userId, startDate, endDate);
-    const amountIn = getAmountByType(amounts, IN)
-    const amountOut = getAmountByType(amounts, OUT)
+    const amountIn = getAmountByType(amounts, IN);
+    const amountOut = getAmountByType(amounts, OUT);
     const total =  amountIn - amountOut;
 
     let dashboard = {};
@@ -29,7 +29,7 @@ const getTransactionsByMonth = async( userId, year, month) => {
     dashboard.amountByPaymentMehod = dashboardMonthService.getAmountByPaymentMethod(transactions);
     dashboard.mostAmountCategory = dashboardMonthService.getMostAmountCategory(amountByCategory);
 
-    const transactionMonth  = new TransactionMonth(amountIn, amountOut, total, dashboard, transactions);
+    const transactionMonth  = new TransactionMonth(formatAmount(amountIn), formatAmount(amountOut), formatAmount(total), dashboard, transactions);
 
     return transactionMonth
 }
@@ -56,6 +56,10 @@ function getAmountByType(amounts, type){
     const transactionAmount = amounts.find(a => a.transaction_type_id == type);
     const amount = transactionAmount ? transactionAmount.total : 0
     return Number(amount)
+}
+
+function formatAmount(amount){
+    return amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 const transactionService = {

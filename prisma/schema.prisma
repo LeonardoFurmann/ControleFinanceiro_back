@@ -74,6 +74,7 @@ model Transaction {
   transactionTypeId Int      @map("transaction_type_id")
   userId            Int      @map("user_id")
   paymentMethodId   Int      @map("payment_method_id")
+  observation       String?   @db.VarChar(255)
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
