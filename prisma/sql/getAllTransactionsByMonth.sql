@@ -5,7 +5,8 @@ SELECT
   t.amount,
   tt.id AS "transactionType",
   c.description AS "category",
-  p.description AS "paymentMethod"
+  p.description AS "paymentMethod",
+  t.observation AS "observation"
 FROM transactions t
 JOIN transaction_types tt ON t.transaction_type_id = tt.id
 JOIN categories c ON t.category_id = c.id
